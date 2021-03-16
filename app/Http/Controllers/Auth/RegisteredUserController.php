@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Utils\PasswordHelper;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,11 +39,21 @@ class RegisteredUserController extends Controller
             'password' => 'required|string|confirmed|min:8',
         ]);
 
+        $isHmac = isset($request->isHmac) && $request->isHmac === 'on' ? true : false;
+
+        if (!$isHmac) {
+            $salt = "jakiś_randomowy_tekst";
+            $pass = PasswordHelper::createSaltPassword($request->password, $salt);
+        } else {
+            $pass = PasswordHelper::createHmacPassword($request->password);
+        }
+
         Auth::login($user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'isHmac' => $request->isHmac
+            'password' => $pass,
+            'isHmac' => $isHmac,
+            'salt' => $salt ?? null
         ]));
 
         event(new Registered($user));

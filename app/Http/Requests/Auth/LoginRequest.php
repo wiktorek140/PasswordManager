@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
+use App\Utils\PasswordHelper;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Auth\SessionGuard;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -45,7 +48,9 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->filled('remember'))) {
+        $user = User::where('email', $this->email)->first();
+
+        if ($user == null || !$this->validateCredentials($this->only('email', 'password'), $user)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -53,6 +58,7 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        Auth::login($user, $this->filled('remember'));
         RateLimiter::clear($this->throttleKey());
     }
 
@@ -89,5 +95,24 @@ class LoginRequest extends FormRequest
     public function throttleKey()
     {
         return Str::lower($this->input('email')).'|'.$this->ip();
+    }
+
+    public function validateCredentials($loginData, $user): bool
+    {
+        if ($loginData['email'] != $user->email) {
+            return false;
+        }
+
+        if ($user->isHmac) {
+            $password = PasswordHelper::createHmacPassword($loginData['password']);
+        } else {
+            $password = PasswordHelper::createSaltPassword($loginData['password'], $user->salt);
+        }
+
+        if ($password == $user->password) {
+            return true;
+        }
+
+        return false;
     }
 }

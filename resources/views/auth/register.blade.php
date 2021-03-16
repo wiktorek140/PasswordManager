@@ -50,7 +50,7 @@
 
                     <x-input id="isHmac" class="block mt-1 w-full"
                              type="checkbox"
-                             name="isHmac" required />
+                             name="isHmac"/>
                 </div>
 
             <div class="flex items-center justify-end mt-4">
