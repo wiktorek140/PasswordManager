@@ -14,8 +14,8 @@ class AddSaltAndSwitch extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('salt');
-            $table->boolean('isHmac');
+            $table->string('salt')->nullable();
+            $table->boolean('isHmac')->default(false);
         });
     }
 
