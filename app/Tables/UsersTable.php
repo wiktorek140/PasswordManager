@@ -34,12 +34,12 @@ class UsersTable extends AbstractTable
      */
     protected function columns(Table $table): void
     {
-        $table->column('id')->sortable(true);
-        $table->column('name')->sortable()->searchable();
-        $table->column('email')->sortable()->searchable();
-        $table->column('created_at')->dateTimeFormat('d/m/Y H:i')->sortable();
-        $table->column('updated_at')->dateTimeFormat('d/m/Y H:i')->sortable();
-        $table->column('isHmac')->sortable();
+        $table->column('id')->sortable(true)->title('ID');
+        $table->column('name')->sortable()->searchable()->title('Imie');
+        $table->column('email')->sortable()->searchable()->title('Email');
+        $table->column('created_at')->dateTimeFormat('d/m/Y H:i')->sortable()->title('Utworzony');
+        $table->column('updated_at')->dateTimeFormat('d/m/Y H:i')->sortable()->title('Zaktualizowany');
+        $table->column('isHmac')->sortable()->title('Używa HMAC?');
     }
 
     /**
