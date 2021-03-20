@@ -31,6 +31,9 @@ class PasswordController extends Controller
         ]);
 
         $pass = Password::create($request->all());
+        if (!$pass) {
+            return back()->with(['error' => true]);
+        }
         return redirect(route('password.index'));
     }
 
@@ -60,5 +63,4 @@ class PasswordController extends Controller
 
         return response()->json(['password' => $result]);
     }
-
 }

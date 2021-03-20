@@ -7,23 +7,24 @@ use Tests\TestCase;
 
 class PasswordHelperTest extends TestCase
 {
-
+    const MASTER_PASSWORD = 'w948t4w8j5t96k4yk64598tk45798dy5698y7k359ykd5679ykd3598y';
     const PASSWORD = "Hasło1234";
-    const VALID_ENCRYPTED ="eyJpdiI6Im1xZ1hxeXlHN3Y0LzFETmZQdkZRRVE9PSIsInZhbHVlIjoidlljeGpZbyt5a2puUTV0eFAzVmpwdz09IiwibWFjIjoiMzg1NTE1YjI2NmJjMzI1OTMxYzk1N2MzYjU2NDM4NThmZDAzNDZjMDRmNzQxYmYzNzY0M2Y0N2ZhYzdhMjY5NyJ9";
+    const VALID_ENCRYPTED ="eyJpdiI6InFyQXdENmlkRHVraXFBTlVuQjdVZkE9PSIsInZhbHVlIjoiTkJuMitMK1pVL2xIQjRTMlgwQzdyQT09IiwibWFjIjoiYTY1NDA5YmRlNmM4Yzg1Y2FiNGM4ZGYzNDFhOGM2N2U4YzJjZGQ0NTkyNWQ0MWQwOGVjMGEwNTRjOTQ2OWU3MiJ9";
 
     const SALT = 'random salt i coś jeszcze!';
     const VALID_SALT = '5cb48b51f642abdb8959757a0084a7378f0acb6162e2b12f5b2a1d7762c2ba7304ceba2b5a7d371869d5573b3eb8b160b60a4f782baa3580002b047e957e30a9';
 
     public function testEncryptPassword()
     {
+        $this->session(['master_password'=> substr(self::MASTER_PASSWORD, 5, 32)]);
         $value = PasswordHelper::encryptPassword(self::PASSWORD);
-
         // correct because password contain additional params that mark its as not edtited by user
         self::assertNotEquals(self::VALID_ENCRYPTED, $value);
     }
 
     public function testDecryptPassword()
     {
+        $this->session(['master_password' => substr(self::MASTER_PASSWORD, 5, 32)]);
         $decrypt1 = PasswordHelper::decryptPassword(self::VALID_ENCRYPTED);
         $decrypt2 = PasswordHelper::decryptPassword(PasswordHelper::encryptPassword(self::PASSWORD));
 

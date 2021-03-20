@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Podaj hasło główne') }}
+        <h2 class="font-semibold text-xl text-light leading-tight">
+            {{__('Podaj hasło główne')}}
         </h2>
     </x-slot>
 
@@ -10,8 +10,8 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     @if (!auth()->user()->master_password)
-                    <div class="p-6 bg-dark border-b sm:rounded-lg">
-                        <span class="text-white">
+                    <div class="p-4 bg-info border-b sm:rounded-lg">
+                        <span class="text-black">
                              Nie posiadasz zapisanego hasła głównego. Wprowadzone hasło będzie twoim hasłem głównym.
                         </span>
                     </div>

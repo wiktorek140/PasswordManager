@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-light leading-tight">
             {{ __('Dodaj nowe hasło') }}
         </h2>
     </x-slot>
@@ -12,38 +12,42 @@
                     <form method="POST" action="{{route('password.store')}}" >
                         @csrf
                         <div class="mt-8">
-                            <x-label for="web_address" :value="__('Adres strony')"/>
-
-                            <x-input id="web_address" class="block mt-1 w-full"
-                                     type="text"
-                                     name="web_address" required/>
-                        </div>
-                        <div class="mt-8">
-                            <x-label for="description" :value="__('Opis')"/>
-
-                            <x-input id="description" class="block mt-1 w-full"
-                                     type="text"
-                                     name="description"/>
-                        </div>
-                        <div class="mt-8">
                             <x-label for="login" :value="__('Login')"/>
 
                             <x-input id="login" class="block mt-1 w-full"
-                                     type="text"
-                                     name="login"/>
+                                     type="text" name="login"/>
                         </div>
                         <div class="mt-8">
                             <x-label for="password" :value="__('Hasło')"/>
 
                             <x-input id="password" class="block mt-1 w-full"
-                                     type="password"
-                                     name="password" required/>
+                                     type="password" name="password" required/>
+                        </div>
+                        <div class="mt-8">
+                            <x-label for="web_address" :value="__('Adres witryny')"/>
+
+                            <x-input id="web_address" class="block mt-1 w-full"
+                                     type="text" name="web_address" required/>
+                        </div>
+                        <div class="mt-8">
+                            <x-label for="description" :value="__('Opis')"/>
+
+                            <x-input id="description" class="block mt-1 w-full"
+                                     type="text" name="description"/>
                         </div>
                         <div class="mt-8">
                             <x-button class="ml-3">
                                 {{ __('Zapisz') }}
                             </x-button>
                         </div>
+
+                        @if(session('error'))
+                            <div class="mt-8">
+                               <div class="p4">
+                                   Przepraszamy coś poszło nie tak
+                               </div>
+                            </div>
+                        @endif
                     </form>
                 </div>
             </div>
