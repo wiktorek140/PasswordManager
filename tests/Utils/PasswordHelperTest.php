@@ -3,7 +3,6 @@
 namespace Tests\Utils;
 
 use App\Utils\PasswordHelper;
-use Illuminate\Support\Facades\Crypt;
 use Tests\TestCase;
 
 class PasswordHelperTest extends TestCase

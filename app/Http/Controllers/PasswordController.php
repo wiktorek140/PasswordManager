@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 class PasswordController extends Controller
 {
     public function index() {
+        if (!auth()->user()->master_password || !session()->has('master_password')) {
+            return redirect(route('master.index'));
+        }
+
         $table = (new PasswordTable())->setup();
         return view('table.password', compact('table'));
     }
@@ -27,12 +31,17 @@ class PasswordController extends Controller
         ]);
 
         $pass = Password::create($request->all());
-        return redirect(route('passwords.index'));
+        return redirect(route('password.index'));
     }
 
     public function destroy($id)
     {
-        Password::find($id)->delete();
+        $passModel = Password::find($id);
+        if ($passModel->user_id != auth()->user()->id){
+            return redirect()->back();
+        }
+
+        $passModel->delete();
         return redirect()->back();
     }
 

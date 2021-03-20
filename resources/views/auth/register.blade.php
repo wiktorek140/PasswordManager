@@ -44,13 +44,11 @@
                                 type="password"
                                 name="password_confirmation" required />
             </div>
-
                 <div class="mt-4">
-                    <x-label for="isHmac" :value="__('Use HMAC method')" />
-
-                    <x-input id="isHmac" class="block mt-1 w-full"
+                    <x-input id="isHmac" class=""
                              type="checkbox"
                              name="isHmac"/>
+                    <x-label for="isHmac" :value="__('Use HMAC method')" style="display: unset" />
                 </div>
 
             <div class="flex items-center justify-end mt-4">

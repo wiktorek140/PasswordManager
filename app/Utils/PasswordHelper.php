@@ -5,6 +5,7 @@ namespace App\Utils;
 
 
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\Crypt;
 
 class PasswordHelper
@@ -27,13 +28,19 @@ class PasswordHelper
     }
 
     public static function encryptPassword($password) {
-       return Crypt::encryptString($password);
+        $encrypter = new Encrypter(session()->get('master_password'), 'AES-256-CBC');
+        return $encrypter->encryptString($password);
     }
 
     public static function decryptPassword($passsword): ?string
     {
         try {
-            $decrypted = Crypt::decryptString($passsword);
+            if (empty(session()->get('master_password'))) {
+                return null;
+            }
+
+            $decryptor = new Encrypter(session()->get('master_password'), 'AES-256-CBC');
+            $decrypted = $decryptor->decryptString($passsword);
         } catch (DecryptException $e) {
             return null;
         }

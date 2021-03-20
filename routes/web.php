@@ -14,20 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 })->name('index');
 
-Route::get('/dashboard', 'App\Http\Controllers\Dashboard@index')
-    ->middleware(['auth'])->name('dashboard');
-
-Route::get('/passwords', 'App\Http\Controllers\PasswordController@index')
-    ->middleware(['auth'])->name('passwords.index');
-
-//Route::get('/password/store', 'App\Http\Controllers\PasswordController@storeView')->middleware(['auth'])->name('password.store');
-Route::post('/password/store', 'App\Http\Controllers\PasswordController@store')->middleware(['auth'])->name('password.store');
-
+Route::resource('master', 'App\Http\Controllers\Dashboard')->middleware(['auth']);
 Route::resource('password','App\Http\Controllers\PasswordController')->middleware(['auth']);
-//Route::get('/password/delete', 'App\Http\Controllers\PasswordController@delete')->middleware(['auth'])->name('password.delete');
-
 
 require __DIR__.'/auth.php';

@@ -18,7 +18,7 @@ class UsersTable extends AbstractTable
     {
         return (new Table())->model(User::class)
             ->routes([
-                'index'   => ['name' => 'dashboard'],
+                'index'   => ['name' => 'master.index'],
             ])
             ->destroyConfirmationHtmlAttributes(fn(User $user) => [
                 'data-confirm' => __('Are you sure you want to delete the line ' . $user->database_attribute . ' ?'),

@@ -19,7 +19,7 @@ class PasswordTable extends AbstractTable
     {
         return (new Table())->model(Password::class)
             ->routes([
-                'index'   => ['name' => 'passwords.index'],
+                'index'   => ['name' => 'password.index'],
                 'create'  => ['name' => 'password.create'],
                 'destroy' => ['name' => 'password.destroy'],
                 'show'    => ['name' => 'password.show'],
@@ -44,7 +44,7 @@ class PasswordTable extends AbstractTable
     protected function columns(Table $table): void
     {
         $table->column('web_address')->sortable()->searchable()->title('Adres strony')->link();
-        $table->column('login')->sortable()->searchable()->title('Login')->link();
+        $table->column('login')->sortable()->searchable()->title('Login');
         $table->column('description')->sortable()->searchable()->title('Opis');
         $table->column('created_at')->sortable()->searchable()->title('Data utworzenia');
         $table->column()->title('Hasło')->html(fn() => '<span class="password">********</span>');
