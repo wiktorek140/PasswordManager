@@ -10,7 +10,7 @@ use Okipa\LaravelTable\Table;
 class PasswordTable extends AbstractTable
 {
     /**
-     * Configure the table itself.
+     * Main function responsible for building tables
      *
      * @return \Okipa\LaravelTable\Table
      * @throws \ErrorException
@@ -36,7 +36,7 @@ class PasswordTable extends AbstractTable
     }
 
     /**
-     * Configure the table columns.
+     * Table columns and definition how it should look like
      *
      * @param \Okipa\LaravelTable\Table $table
      *
@@ -49,15 +49,5 @@ class PasswordTable extends AbstractTable
         $table->column('description')->sortable()->title('Opis');
         $table->column('created_at')->sortable()->title('Data utworzenia');
         $table->column()->title('Hasło')->html(fn() => '<span class="password">********</span>');
-    }
-
-    /**
-     * Configure the table result lines.
-     *
-     * @param \Okipa\LaravelTable\Table $table
-     */
-    protected function resultLines(Table $table): void
-    {
-        //
     }
 }

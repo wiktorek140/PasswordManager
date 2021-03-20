@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('index');
 
-Route::resource('master', 'App\Http\Controllers\Dashboard')->middleware(['auth']);
+Route::resource('master', 'App\Http\Controllers\MasterPasswordController')->middleware(['auth']);
 Route::resource('password','App\Http\Controllers\PasswordController')->middleware(['auth']);
 
 require __DIR__.'/auth.php';

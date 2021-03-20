@@ -11,17 +11,20 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form method="POST" action="{{route('password.store')}}" >
                         @csrf
-                        <div class="mt-8">
-                            <x-label for="login" :value="__('Login')"/>
 
-                            <x-input id="login" class="block mt-1 w-full"
-                                     type="text" name="login"/>
-                        </div>
-                        <div class="mt-8">
-                            <x-label for="password" :value="__('Hasło')"/>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="mt-8">
+                                <x-label for="login" :value="__('Login')"/>
 
-                            <x-input id="password" class="block mt-1 w-full"
-                                     type="password" name="password" required/>
+                                <x-input id="login" class="block mt-1 w-full"
+                                         type="text" name="login"/>
+                            </div>
+                            <div class="mt-8">
+                                <x-label for="password" :value="__('Hasło')"/>
+
+                                <x-input id="password" class="block mt-1 w-full"
+                                         type="password" name="password" required/>
+                            </div>
                         </div>
                         <div class="mt-8">
                             <x-label for="web_address" :value="__('Adres witryny')"/>

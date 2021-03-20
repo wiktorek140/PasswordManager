@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class PasswordController extends Controller
 {
+    /**
+     * Create base view with table
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function index() {
         if (!auth()->user()->master_password || !session()->has('master_password')) {
             return redirect(route('master.index'));
@@ -18,6 +22,10 @@ class PasswordController extends Controller
         return view('table.password', compact('table'));
     }
 
+    /**
+     * Create view with form for adding new password
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function create() {
         return view('passwordStore');
     }
@@ -37,6 +45,11 @@ class PasswordController extends Controller
         return redirect(route('password.index'));
     }
 
+    /**
+     * Function that destroy password when user ask for it
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy($id)
     {
         $passModel = Password::find($id);
@@ -48,6 +61,11 @@ class PasswordController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Resturn password or proper message when fail to decode password
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id) {
         $passModel = Password::find($id);
 

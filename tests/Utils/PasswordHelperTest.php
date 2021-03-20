@@ -14,6 +14,28 @@ class PasswordHelperTest extends TestCase
     const SALT = 'random salt i coś jeszcze!';
     const VALID_SALT = '5cb48b51f642abdb8959757a0084a7378f0acb6162e2b12f5b2a1d7762c2ba7304ceba2b5a7d371869d5573b3eb8b160b60a4f782baa3580002b047e957e30a9';
 
+    public function testCreateHmacPassword()
+    {
+        $pregenHMAC = 'bc56900e7c1c7f0cf9cf368ba5dc67654ff92c58f4092d0117ef7dcba30efb2e';
+
+        $value = PasswordHelper::createHmacPassword(self::PASSWORD);
+        self::assertNotNull($value);
+        self::assertEquals($pregenHMAC, $value);
+    }
+
+    public function testCreateSaltPassword()
+    {
+        $value = PasswordHelper::createSaltPassword(self::PASSWORD, self::SALT);
+        self::assertNotNull($value);
+        self::assertEquals(self::VALID_SALT, $value);
+    }
+
+    public function testCreateWithOtherSalt() {
+        $valueChangesSalt = PasswordHelper::createSaltPassword(self::PASSWORD, 'inny salt');
+        self::assertNotNull($valueChangesSalt);
+        self::assertNotEquals(self::VALID_SALT, $valueChangesSalt);
+    }
+
     public function testEncryptPassword()
     {
         $this->session(['master_password'=> substr(self::MASTER_PASSWORD, 5, 32)]);
@@ -41,27 +63,5 @@ class PasswordHelperTest extends TestCase
         $decrypt1 = PasswordHelper::decryptPassword($encrypted);
         self::assertNull($decrypt1);
         self::assertNotEquals(self::VALID_ENCRYPTED, $decrypt1);
-    }
-
-    public function testCreateHmacPassword()
-    {
-        $pregenHMAC = 'bc56900e7c1c7f0cf9cf368ba5dc67654ff92c58f4092d0117ef7dcba30efb2e';
-
-        $value = PasswordHelper::createHmacPassword(self::PASSWORD);
-        self::assertNotNull($value);
-        self::assertEquals($pregenHMAC, $value);
-    }
-
-    public function testCreateSaltPassword()
-    {
-        $value = PasswordHelper::createSaltPassword(self::PASSWORD, self::SALT);
-        self::assertNotNull($value);
-        self::assertEquals(self::VALID_SALT, $value);
-    }
-
-    public function testCreateWithOtherSalt() {
-        $valueChangesSalt = PasswordHelper::createSaltPassword(self::PASSWORD, 'inny salt');
-        self::assertNotNull($valueChangesSalt);
-        self::assertNotEquals(self::VALID_SALT, $valueChangesSalt);
     }
 }
