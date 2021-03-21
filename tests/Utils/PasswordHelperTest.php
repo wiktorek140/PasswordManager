@@ -32,7 +32,7 @@ class PasswordHelperTest extends TestCase
     }
 
     public function testCreateWithOtherSalt() {
-        $valueChangesSalt = PasswordHelper::createSaltPassword(self::PASSWORD, 'inny salt');
+        $valueChangesSalt = PasswordHelper::createSaltPassword(self::PASSWORD, 'yufuyruyrruidlt');
         self::assertNotNull($valueChangesSalt);
         self::assertNotEquals(self::VALID_SALT, $valueChangesSalt);
     }
