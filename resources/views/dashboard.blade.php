@@ -32,7 +32,7 @@
                         @if (session()->get('error'))
                             <div class="mt-4">
                                 <div class="p-2 bg-danger border-b sm:rounded-lg">
-                                    <span>Given password is wrong!</span>
+                                    <span>Password is wrong!</span>
                                 </div>
                             </div>
                         @endif
