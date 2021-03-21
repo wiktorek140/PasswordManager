@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight bg-dark text-light">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight bg-dark text-light w-75">
             {{ __('Zapisane hasła') }}
         </h2>
     </x-slot>
