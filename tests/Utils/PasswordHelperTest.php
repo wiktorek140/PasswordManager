@@ -3,6 +3,7 @@
 namespace Tests\Utils;
 
 use App\Utils\PasswordHelper;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 
 class PasswordHelperTest extends TestCase
@@ -44,6 +45,14 @@ class PasswordHelperTest extends TestCase
         self::assertNotEquals(self::VALID_ENCRYPTED, $value);
     }
 
+    public function testEncryptPasswordWithoutSession()
+    {
+        $value = PasswordHelper::encryptPassword(self::PASSWORD);
+        // should not decrypt and return instance of redirect
+        self::assertNotEquals(self::VALID_ENCRYPTED, $value);
+        self::assertInstanceOf('Illuminate\Http\RedirectResponse', $value);
+    }
+
     public function testDecryptPassword()
     {
         $this->session(['master_password' => substr(self::MASTER_PASSWORD, 5, 32)]);
@@ -52,6 +61,7 @@ class PasswordHelperTest extends TestCase
 
         self::assertNotNull($decrypt1);
         self::assertNotNull($decrypt2);
+        //check if generated and pregen pasword are equal
         self::assertEquals($decrypt1, $decrypt2);
     }
 
