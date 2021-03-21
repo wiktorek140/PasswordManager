@@ -2,7 +2,7 @@
 
 namespace Tests\Utils;
 
-use App\Utils\PasswordHelper;
+use App\Utils\PasswordUtils;
 use Illuminate\Http\Request;
 use Tests\TestCase;
 
@@ -19,45 +19,45 @@ class PasswordHelperTest extends TestCase
     {
         $pregenHMAC = 'bc56900e7c1c7f0cf9cf368ba5dc67654ff92c58f4092d0117ef7dcba30efb2e';
 
-        $value = PasswordHelper::createHmacPassword(self::PASSWORD);
+        $value = PasswordUtils::createHmacPassword(self::PASSWORD);
         self::assertNotNull($value);
         self::assertEquals($pregenHMAC, $value);
     }
 
-    public function testCreateSaltPassword()
+    public function testCreatePasswordWithSalt()
     {
-        $value = PasswordHelper::createSaltPassword(self::PASSWORD, self::SALT);
+        $value = PasswordUtils::createSaltPassword(self::PASSWORD, self::SALT);
         self::assertNotNull($value);
         self::assertEquals(self::VALID_SALT, $value);
     }
 
     public function testCreateWithOtherSalt() {
-        $valueChangesSalt = PasswordHelper::createSaltPassword(self::PASSWORD, 'yufuyruyrruidlt');
+        $valueChangesSalt = PasswordUtils::createSaltPassword(self::PASSWORD, 'yufuyruyrruidlt');
         self::assertNotNull($valueChangesSalt);
         self::assertNotEquals(self::VALID_SALT, $valueChangesSalt);
     }
 
-    public function testEncryptPassword()
+    public function testEncryptingPass()
     {
         $this->session(['master_password'=> substr(self::MASTER_PASSWORD, 5, 32)]);
-        $value = PasswordHelper::encryptPassword(self::PASSWORD);
+        $value = PasswordUtils::encryptPassword(self::PASSWORD);
         // correct because password contain additional params that mark its as not edtited by user
         self::assertNotEquals(self::VALID_ENCRYPTED, $value);
     }
 
-    public function testEncryptPasswordWithoutSession()
+    public function testEncryptingPassWithoutSession()
     {
-        $value = PasswordHelper::encryptPassword(self::PASSWORD);
+        $value = PasswordUtils::encryptPassword(self::PASSWORD);
         // should not decrypt and return instance of redirect
         self::assertNotEquals(self::VALID_ENCRYPTED, $value);
         self::assertInstanceOf('Illuminate\Http\RedirectResponse', $value);
     }
 
-    public function testDecryptPassword()
+    public function testDecryptPass()
     {
         $this->session(['master_password' => substr(self::MASTER_PASSWORD, 5, 32)]);
-        $decrypt1 = PasswordHelper::decryptPassword(self::VALID_ENCRYPTED);
-        $decrypt2 = PasswordHelper::decryptPassword(PasswordHelper::encryptPassword(self::PASSWORD));
+        $decrypt1 = PasswordUtils::decryptPassword(self::VALID_ENCRYPTED);
+        $decrypt2 = PasswordUtils::decryptPassword(PasswordUtils::encryptPassword(self::PASSWORD));
 
         self::assertNotNull($decrypt1);
         self::assertNotNull($decrypt2);
@@ -70,7 +70,7 @@ class PasswordHelperTest extends TestCase
         //encrypted is broken lets check result
         $encrypted = "eyJpdkuuiI6Im1xhxeXlHN3Y0LzFETmZQdkZRRVE9PSIsInZhbHVlIjoidlljeGpZbyt5a2puUTV0eFAzVmpwdz09IiwibWFjIjoiMzg1NTE1YjI2NmJjMzI1OTzk1N2MzYjU2NDM4NThmZDAzNDZjMDRmNzQxYmYzNzY0M2Y0N2ZhYzdhMjY5NyJ9";
 
-        $decrypt1 = PasswordHelper::decryptPassword($encrypted);
+        $decrypt1 = PasswordUtils::decryptPassword($encrypted);
         self::assertNull($decrypt1);
         self::assertNotEquals(self::VALID_ENCRYPTED, $decrypt1);
     }

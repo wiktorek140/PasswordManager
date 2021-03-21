@@ -5,7 +5,7 @@ namespace Tests\Http\Controllers;
 use App\Http\Controllers\PasswordController;
 use App\Models\Password;
 use App\Models\User;
-use App\Utils\PasswordHelper;
+use App\Utils\PasswordUtils;
 use Tests\TestCase;
 
 class PasswordControllerTest extends TestCase
@@ -17,7 +17,7 @@ class PasswordControllerTest extends TestCase
         auth()->login($user);
         $obj = new PasswordController();
         $this->session(['master_password' => substr('4875634785643875683746587437865874', 0, 32)]);
-        $pasword = Password::factory()->create(['user_id'=> $user->id, 'password' =>PasswordHelper::encryptPassword('password_key')]);
+        $pasword = Password::factory()->create(['user_id'=> $user->id, 'password' =>PasswordUtils::encryptPassword('password_key')]);
 
         foreach(Password::all() as $passObj) {
             $result = $obj->show($passObj->id);

@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Models\User;
-use App\Utils\PasswordHelper;
+use App\Utils\PasswordUtils;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Foundation\Http\FormRequest;
@@ -104,9 +104,9 @@ class LoginRequest extends FormRequest
         }
 
         if ($user->isHmac) {
-            $password = PasswordHelper::createHmacPassword($loginData['password']);
+            $password = PasswordUtils::createHmacPassword($loginData['password']);
         } else {
-            $password = PasswordHelper::createSaltPassword($loginData['password'], $user->salt);
+            $password = PasswordUtils::createSaltPassword($loginData['password'], $user->salt);
         }
 
         if ($password == $user->password) {

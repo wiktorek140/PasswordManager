@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Password;
 use App\Tables\PasswordTable;
-use App\Utils\PasswordHelper;
+use App\Utils\PasswordUtils;
 use Illuminate\Http\Request;
 
 class PasswordController extends Controller
@@ -31,7 +31,7 @@ class PasswordController extends Controller
     }
 
     public function store(Request $request) {
-        $pass = PasswordHelper::encryptPassword($request->password);
+        $pass = PasswordUtils::encryptPassword($request->password);
 
         $request->merge([
             'user_id' => auth()->user()->id,
@@ -73,7 +73,7 @@ class PasswordController extends Controller
             return response()->json(['error' => 'Nie masz dostępu do tego elementu!']);
         }
 
-        $result = PasswordHelper::decryptPassword($passModel->password);
+        $result = PasswordUtils::decryptPassword($passModel->password);
 
         if ($result === null) {
             return response()->json(['error' => 'Wystąpił błąd z roszyfrowywaniem hasła!']);

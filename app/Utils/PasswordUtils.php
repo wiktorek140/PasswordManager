@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Encryption\Encrypter;
 
-class PasswordHelper
+class PasswordUtils
 {
 
     /**
