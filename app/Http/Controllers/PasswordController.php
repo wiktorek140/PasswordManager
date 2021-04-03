@@ -38,7 +38,14 @@ class PasswordController extends Controller
             'password' => $pass
         ]);
 
-        $pass = Password::create($request->all());
+        if ($request->has('id')) {
+            $pass = Password::find($request->id);
+            $pass->fill($request->toArray());
+            $pass->save();
+        } else {
+            $pass = Password::create($request->all());
+        }
+
         if (!$pass) {
             return back()->with(['error' => true]);
         }
@@ -80,5 +87,17 @@ class PasswordController extends Controller
         }
 
         return response()->json(['password' => $result]);
+    }
+
+
+    public function edit($id) {
+        $passModel = Password::find($id);
+        if (!$passModel || $passModel->user_id != auth()->user()->id){
+            return redirect()->back();
+        }
+
+        $passModel->password = PasswordUtils::decryptPassword($passModel->password);
+
+        return view('passwordStore', compact('passModel'));
     }
 }

@@ -23,6 +23,7 @@ class PasswordTable extends AbstractTable
                 'create'  => ['name' => 'password.create'],
                 'destroy' => ['name' => 'password.destroy'],
                 'show'    => ['name' => 'password.show'],
+                'edit'    => ['name' => 'password.edit'],
             ])
             ->query(function (Builder $query) {
                $query->select('*')->where('user_id', auth()->user()->id);
@@ -48,6 +49,8 @@ class PasswordTable extends AbstractTable
         $table->column('web_address')->sortable()->title('Adres strony')->link();
         $table->column('description')->sortable()->title('Opis');
         $table->column('created_at')->sortable()->title('Data utworzenia');
-        $table->column()->title('Hasło')->html(fn() => '<span class="password">********</span>');
+        $table->column()->title('Hasło')->html(
+            fn(Password $pass) => '<span class="password">********</span><span style="padding-left:12px"><a class="share-password" href="password/'. $pass->id .'"><i class="fas fa-share-square"></i></a></span>'
+        );
     }
 }

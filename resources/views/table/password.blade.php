@@ -1,5 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
+        <div class="w-25 float-right">
+            <x-button name="changeMode" id="changeMode" data-mode="read">Read Mode</x-button>
+        </div>
         <h2 class="font-semibold text-xl text-gray-800 leading-tight bg-dark text-light w-75">
             {{ __('Zapisane hasła') }}
         </h2>

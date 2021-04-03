@@ -1,7 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-light leading-tight">
-            {{ __('Dodaj nowe hasło') }}
+            @isset($passModel)
+                {{ __('Edytuj istniejące hasło') }}
+            @else
+                {{ __('Dodaj nowe hasło') }}
+            @endisset
         </h2>
     </x-slot>
 
@@ -12,31 +16,39 @@
                     <form method="POST" action="{{route('password.store')}}" >
                         @csrf
 
+                        @isset($passModel)
+                            <x-input type="hidden" name="id" id="id" value="{{$passModel->id}}" />
+                        @endisset
+
                         <div class="grid grid-cols-2 gap-2">
                             <div class="mt-8">
                                 <x-label for="login" :value="__('Login')"/>
 
                                 <x-input id="login" class="block mt-1 w-full"
-                                         type="text" name="login"/>
+                                         type="text" name="login"
+                                         value="{{$passModel->login ?? ''}}" />
                             </div>
                             <div class="mt-8">
                                 <x-label for="password" :value="__('Hasło')"/>
 
                                 <x-input id="password" class="block mt-1 w-full"
-                                         type="password" name="password" required/>
+                                         type="password" name="password" required
+                                         value="{{$passModel->password ?? ''}}" />
                             </div>
                         </div>
                         <div class="mt-8">
                             <x-label for="web_address" :value="__('Adres witryny')"/>
 
                             <x-input id="web_address" class="block mt-1 w-full"
-                                     type="text" name="web_address" required/>
+                                     type="text" name="web_address" required
+                                     value="{{$passModel->web_address ?? ''}}" />
                         </div>
                         <div class="mt-8">
                             <x-label for="description" :value="__('Opis')"/>
 
                             <x-input id="description" class="block mt-1 w-full"
-                                     type="text" name="description"/>
+                                     type="text" name="description"
+                                     value="{{$passModel->description ?? ''}}" />
                         </div>
                         <div class="mt-8">
                             <x-button class="ml-3">
