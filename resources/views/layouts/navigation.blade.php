@@ -8,6 +8,12 @@
                     <x-nav-link :href="route('password.index')" :active="request()->routeIs('passwords.index')" class="text-light">
                         {{ __('Zapisane hasła') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('history.index')" :active="request()->routeIs('history.index')" class="text-light">
+                        {{ __('Historia aktywności') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('datahistory.index')" :active="request()->routeIs('datahistory.index')" class="text-light">
+                        {{ __('Historia zmian') }}
+                    </x-nav-link>
                 </div>
             </div>
 

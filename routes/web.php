@@ -19,5 +19,7 @@ Route::get('/', function () {
 
 Route::resource('master', 'App\Http\Controllers\MasterPasswordController')->middleware(['auth']);
 Route::resource('password','App\Http\Controllers\PasswordController')->middleware(['auth']);
+Route::resource('history','App\Http\Controllers\HistoryController')->middleware(['auth']);
+Route::resource('datahistory','App\Http\Controllers\DataHistoryController')->middleware(['auth']);
 
 require __DIR__.'/auth.php';
