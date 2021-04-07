@@ -31,6 +31,7 @@ class PasswordController extends Controller
     }
 
     public function store(Request $request) {
+        $additional = [];
         $pass = PasswordUtils::encryptPassword($request->password);
 
         $request->merge([
@@ -39,13 +40,22 @@ class PasswordController extends Controller
         ]);
 
         if ($request->has('id')) {
+
+            $additional['object_id'] = $request->id;
             $pass = Password::find($request->id);
+            $oldData = $pass->toArray();
             $pass->fill($request->toArray());
             $pass->save();
+
+            Datachange::data(__METHOD__, $pass, $oldData);
         } else {
             $pass = Password::create($request->all());
+            $additional['new_object_id'] = $pass->id;
+
+            Datachange::data(__METHOD__, $pass, []);
         }
 
+        Datachange::action(__METHOD__, $additional);
         if (!$pass) {
             return back()->with(['error' => true]);
         }
@@ -57,13 +67,14 @@ class PasswordController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
+        Datachange::action(__METHOD__, ['object_id' => $id]);
         $passModel = Password::find($id);
+
         if ($passModel->user_id != auth()->user()->id){
             return redirect()->back();
         }
-
+        Datachange::data(__METHOD__, $passModel, [], true);
         $passModel->delete();
         return redirect()->back();
     }
@@ -77,20 +88,23 @@ class PasswordController extends Controller
         $passModel = Password::find($id);
 
         if ($passModel->user_id != auth()->user()->id){
+            Datachange::action(__METHOD__, ['error' => 'Nie masz dostępu do tego elementu!']);
             return response()->json(['error' => 'Nie masz dostępu do tego elementu!']);
         }
 
         $result = PasswordUtils::decryptPassword($passModel->password);
 
         if ($result === null) {
+            Datachange::action(__METHOD__, ['error' => 'Wystąpił błąd z roszyfrowywaniem hasła!']);
             return response()->json(['error' => 'Wystąpił błąd z roszyfrowywaniem hasła!']);
         }
-
+        Datachange::action(__METHOD__, ['object_id' => $id]);
         return response()->json(['password' => $result]);
     }
 
 
     public function edit($id) {
+        Datachange::action(__METHOD__, ['object_id' => $id]);
         $passModel = Password::find($id);
         if (!$passModel || $passModel->user_id != auth()->user()->id){
             return redirect()->back();
