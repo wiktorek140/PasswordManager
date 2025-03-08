@@ -39,21 +39,31 @@ class DataTable extends AbstractTable
             function (DatachangeLog $dcl) {
                 $res = json_decode($dcl->old_data);
                 if (isset($res->password)) {
-                    $res->password = substr($res->password, 0,8) . "..." . substr($res->password, -8, 8);
+                    $res->password = substr($res->password, 0, 8) . "..." . substr($res->password, -8, 8);
                 }
 
                 return '<pre>' . print_r($res, true) . '</pre>';
-            });
+            }
+        );
         $table->column('new_data')->sortable()->searchable()->title("Po")->html(
             function (DatachangeLog $dcl) {
                 $res = json_decode($dcl->new_data);
                 if (isset($res->password)) {
-                    $res->password = substr($res->password, 0,8) . "..." . substr($res->password, -8, 8);
+                    $res->password = substr($res->password, 0, 8) . "..." . substr($res->password, -8, 8);
                 }
 
                 return '<pre>' . print_r($res, true) . '</pre>';
-            });
-        $table->column('created_at')->sortable()->title("Data");
+            }
+        );
+        $table->column('created_at')->sortable(true, 'desc')->title("Data");
+        $table->column()->title("Operacja")->html(
+            function (DatachangeLog $log) {
+                if (strpos($log->action, '::store') !== false)
+                    return '<div class="restore-action">
+<a class="btn btn-link p-0 text-primary" href="/datahistory/' . $log->id . '"><i class="fas fa-fw fa-eye"></i></a>
+</div>';
+            }
+        );
     }
 
     /**

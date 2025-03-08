@@ -19,14 +19,14 @@ class PasswordTable extends AbstractTable
     {
         return (new Table())->model(Password::class)
             ->routes([
-                'index'   => ['name' => 'password.index'],
-                'create'  => ['name' => 'password.create'],
+                'index' => ['name' => 'password.index'],
+                'create' => ['name' => 'password.create'],
                 'destroy' => ['name' => 'password.destroy'],
-                'show'    => ['name' => 'password.show'],
-                'edit'    => ['name' => 'password.edit'],
+                'show' => ['name' => 'password.show'],
+                'edit' => ['name' => 'password.edit'],
             ])
             ->query(function (Builder $query) {
-               $query->select('*')->where('user_id', auth()->user()->id);
+                $query->select('*')->where('user_id', auth()->user()->id);
             })->rowsNumber(20)
             ->activateRowsNumberDefinition(false)
             ->destroyConfirmationHtmlAttributes(fn(Password $pass) => [
@@ -50,7 +50,7 @@ class PasswordTable extends AbstractTable
         $table->column('description')->sortable()->title('Opis');
         $table->column('created_at')->sortable()->title('Data utworzenia');
         $table->column()->title('Hasło')->html(
-            fn(Password $pass) => '<span class="password">********</span><span style="padding-left:12px"><a class="share-password" href="password/'. $pass->id .'"><i class="fas fa-share-square"></i></a></span>'
+            fn(Password $pass) => '<span class="password">********</span><span style="padding-left:12px"><a class="share-password" href="password/' . $pass->id . '"><i class="fas fa-share-square"></i></a></span>'
         );
     }
 }

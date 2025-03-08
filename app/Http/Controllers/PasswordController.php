@@ -13,7 +13,8 @@ class PasswordController extends Controller
      * Create base view with table
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function index() {
+    public function index()
+    {
         if (!auth()->user()->master_password || !session()->has('master_password')) {
             return redirect(route('master.index'));
         }
@@ -26,11 +27,13 @@ class PasswordController extends Controller
      * Create view with form for adding new password
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function create() {
+    public function create()
+    {
         return view('passwordStore');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $additional = [];
         $pass = PasswordUtils::encryptPassword($request->password);
 
@@ -67,11 +70,12 @@ class PasswordController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         Datachange::action(__METHOD__, ['object_id' => $id]);
         $passModel = Password::find($id);
 
-        if ($passModel->user_id != auth()->user()->id){
+        if ($passModel->user_id != auth()->user()->id) {
             return redirect()->back();
         }
         Datachange::data(__METHOD__, $passModel, [], true);
@@ -84,10 +88,11 @@ class PasswordController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id) {
+    public function show($id)
+    {
         $passModel = Password::find($id);
 
-        if ($passModel->user_id != auth()->user()->id){
+        if ($passModel->user_id != auth()->user()->id) {
             Datachange::action(__METHOD__, ['error' => 'Nie masz dostępu do tego elementu!']);
             return response()->json(['error' => 'Nie masz dostępu do tego elementu!']);
         }
@@ -103,10 +108,11 @@ class PasswordController extends Controller
     }
 
 
-    public function edit($id) {
+    public function edit($id)
+    {
         Datachange::action(__METHOD__, ['object_id' => $id]);
         $passModel = Password::find($id);
-        if (!$passModel || $passModel->user_id != auth()->user()->id){
+        if (!$passModel || $passModel->user_id != auth()->user()->id) {
             return redirect()->back();
         }
 

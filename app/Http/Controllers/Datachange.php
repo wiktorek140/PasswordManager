@@ -26,8 +26,8 @@ class Datachange extends Controller
         $dataModel->user_id = auth()->user()->id;
         $dataModel->action = $action;
         $dataModel->table_name = $model->getTable();
-        $dataModel->old_data = $flipOrder? json_encode($model->toArray()) : json_encode($oldData);
-        $dataModel->new_data = $flipOrder? json_encode($oldData) : json_encode($model->toArray());
+        $dataModel->old_data = $flipOrder ? json_encode($model->toArray()) : json_encode($oldData);
+        $dataModel->new_data = $flipOrder ? json_encode($oldData) : json_encode($model->toArray());
         $dataModel->object_id = $model->id;
         $dataModel->save();
     }

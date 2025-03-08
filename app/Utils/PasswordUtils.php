@@ -14,7 +14,8 @@ class PasswordUtils
      * @param $password
      * @return string
      */
-    public static function createHmacPassword($password) {
+    public static function createHmacPassword($password)
+    {
         return hash_hmac('sha256', $password, 'super Tajne hasło');
     }
 
@@ -24,7 +25,8 @@ class PasswordUtils
      * @param $salt
      * @return string
      */
-    public static function createSaltPassword($password, $salt) {
+    public static function createSaltPassword($password, $salt)
+    {
         return hash('sha512', $password . $salt);
     }
 
@@ -33,7 +35,8 @@ class PasswordUtils
      * @param $password
      * @return string
      */
-    public static function encryptPassword($password) {
+    public static function encryptPassword($password)
+    {
         try {
             $encrypter = new Encrypter(session()->get('master_password'), 'AES-256-CBC');
         } catch (Exception $e) {
